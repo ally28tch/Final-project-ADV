@@ -63,7 +63,6 @@ class SmartParkApp:
             ("Park Vehicle", self.show_park_vehicle, "#27ae60"),
             ("Unpark Vehicle", self.show_unpark_vehicle, "#e74c3c"),
             ("View Parking Map", self.show_parking_map, "#3498db"),
-            ("Check Availability", self.check_availability, "#f39c12"),
             ("View Parking History", self.show_parking_history, "#9b59b6"),
         ]
         
@@ -375,90 +374,6 @@ class SmartParkApp:
             bg="#95a5a6",
             fg="white",
             width=15,
-            command=self.show_dashboard
-        ).pack(pady=20)
-    
-    def check_availability(self):
-        self.clear_content()
-        
-        # Title
-        title = tk.Label(
-            self.content_frame,
-            text="Parking Availability",
-            font=("Arial", 18, "bold"),
-            bg="#ecf0f1",
-            fg="#2c3e50"
-        )
-        title.pack(pady=20)
-        
-        # Get parking spots data
-        spots = self.db.get_parking_spots()
-        
-        if not spots:
-            tk.Label(
-                self.content_frame,
-                text="No parking spots found in database.",
-                font=("Arial", 12),
-                bg="#ecf0f1",
-                fg="#e74c3c"
-            ).pack(pady=20)
-        else:
-            # Create scrollable list
-            list_frame = tk.Frame(self.content_frame, bg="white")
-            list_frame.pack(pady=20, padx=20, fill=tk.BOTH, expand=True)
-            
-            # Create treeview for better display
-            tree = ttk.Treeview(
-                list_frame,
-                columns=("Spot", "Status"),
-                show="headings",
-                height=15
-            )
-            
-            tree.heading("Spot", text="Spot ID")
-            tree.heading("Status", text="Status")
-            
-            tree.column("Spot", width=200, anchor="center")
-            tree.column("Status", width=200, anchor="center")
-            
-            # Add scrollbar
-            scrollbar = ttk.Scrollbar(list_frame, orient=tk.VERTICAL, command=tree.yview)
-            tree.configure(yscroll=scrollbar.set)
-            
-            # Insert data
-            for spot_id, occupied in spots:
-                status = "OCCUPIED" if occupied else "AVAILABLE"
-                tag = "occupied" if occupied else "available"
-                tree.insert("", tk.END, values=(f"Spot {spot_id}", status), tags=(tag,))
-            
-            # Configure tags for colors
-            tree.tag_configure("occupied", background="#ffcccc")
-            tree.tag_configure("available", background="#ccffcc")
-            
-            tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-            scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-            
-            # Summary
-            occupied_count = sum(1 for _, occupied in spots if occupied)
-            available_count = len(spots) - occupied_count
-            
-            summary = tk.Label(
-                self.content_frame,
-                text=f"Total Spots: {len(spots)} | Available: {available_count} | Occupied: {occupied_count}",
-                font=("Arial", 12, "bold"),
-                bg="#ecf0f1",
-                fg="#2c3e50"
-            )
-            summary.pack(pady=10)
-        
-        # Back button (always show regardless of spots)
-        tk.Button(
-            self.content_frame,
-            text="Back to Dashboard",
-            font=("Arial", 12, "bold"),
-            bg="#95a5a6",
-            fg="white",
-            width=20,
             command=self.show_dashboard
         ).pack(pady=20)
     
