@@ -1,0 +1,118 @@
+:root {
+    --azure: #0080FF;
+    --yale: #0E4D92;
+    --space: #1D2951;
+    --electric: #79F6FC;
+    --turquoise: #42E0D1;
+    --prussian: #003152;
+    --baby: #87CDEE;
+    --royal: #101D6B;
+    --green-glow: #2ed874;
+    --green-border: #33d273;
+    --background-gradient: linear-gradient(135deg, var(--prussian) 10%, var(--space) 90%);
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--background-gradient);
+    color: var(--electric);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0 20px 20px;
+    user-select: none;
+}
+
+header {
+    width: 100%;
+    max-width: 550px;
+    height: 75px;
+    background: linear-gradient(90deg, var(--yale), var(--royal));
+    border-radius: 0 0 28px 28px;
+    box-shadow: 0 5px 15px rgba(10, 37, 94, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 0 auto 20px auto;
+    user-select: none;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 460px;
+}
+
+.logo-circle {
+    background-color: var(--electric);
+    border-radius: 50%;
+    padding: 6px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    color: var(--electric);
+    font-weight: 900;
+    font-size: 2rem;
+    letter-spacing: 0.13em;
+    text-shadow: 0 0 10px var(--azure);
+    user-select: none;
+}
+
+main {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+    margin-bottom: 40px;
+}
+
+.btn-back {
+    width: 180px;
+    height: 55px;
+    margin: 0 auto;
+    margin-top: 10px;
+    padding: 14px 0;
+    font-weight: 750;
+    font-size: 12px;
+    color: var(--electric);
+    background: transparent;
+    border-radius: 40px;
+    border: 3.5px solid var(--green-border);
+    box-shadow: 0 0 35px var(--green-glow);
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-back:hover {
+    background-color: var(--green-glow);
+    color: var(--prussian);
+}
+
+small-back-btn {
+    font-size: 12px;
+    padding: 5px 0;
+}
