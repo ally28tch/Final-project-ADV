@@ -185,3 +185,52 @@ class DatabaseManager:
                 cursor.close()
             if conn:
                 conn.close()
+    
+    def get_parking_history(self, limit: int = 50) -> List[Dict]:
+        """Fetch parking history records"""
+        conn = None
+        cursor = None
+        history = []
+        
+        try:
+            conn = self.get_connection()
+            if not conn:
+                return history
+            
+            cursor = conn.cursor()
+            cursor.execute(
+                """SELECT history_id, spot_id, driver_name, plate_number, 
+                          time_in, time_out 
+                   FROM parking_history 
+                   ORDER BY time_out DESC 
+                   LIMIT %s""",
+                (limit,)
+            )
+            
+            rows = cursor.fetchall()
+            
+            for row in rows:
+                history.append({
+                    'id': row[0],
+                    'spot_id': row[1],
+                    'driver_name': row[2],
+                    'plate_number': row[3],
+                    'time_in': row[4],
+                    'time_out': row[5]
+                })
+            
+            return history
+            
+        except mysql.connector.Error as err:
+            print(f"Database error: {err}")
+            return history
+            
+        except Exception as e:
+            print(f"Error: {e}")
+            return history
+            
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()

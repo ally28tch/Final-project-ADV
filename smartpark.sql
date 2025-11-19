@@ -17,5 +17,6 @@ CREATE TABLE parking_history (
     driver_name VARCHAR(255),
     plate_number VARCHAR(50),
     time_in DATETIME,
-    time_out DATETIME
+    time_out DATETIME,
+    FOREIGN KEY (spot_id) REFERENCES parking_spots(id)
 );

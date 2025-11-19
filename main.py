@@ -64,6 +64,7 @@ class SmartParkApp:
             ("Unpark Vehicle", self.show_unpark_vehicle, "#e74c3c"),
             ("View Parking Map", self.show_parking_map, "#3498db"),
             ("Check Availability", self.check_availability, "#f39c12"),
+            ("View Parking History", self.show_parking_history, "#9b59b6"),
         ]
         
         for text, command, color in buttons:
@@ -451,6 +452,198 @@ class SmartParkApp:
             summary.pack(pady=10)
         
         # Back button (always show regardless of spots)
+        tk.Button(
+            self.content_frame,
+            text="Back to Dashboard",
+            font=("Arial", 12, "bold"),
+            bg="#95a5a6",
+            fg="white",
+            width=20,
+            command=self.show_dashboard
+        ).pack(pady=20)
+    
+    def show_parking_history(self):
+        self.clear_content()
+        
+        # Title
+        title = tk.Label(
+            self.content_frame,
+            text="Parking History",
+            font=("Arial", 18, "bold"),
+            bg="#ecf0f1",
+            fg="#2c3e50"
+        )
+        title.pack(pady=20)
+        
+        # Get parking history data
+        history = self.db.get_parking_history()
+        
+        if not history:
+            tk.Label(
+                self.content_frame,
+                text="No parking history records found.",
+                font=("Arial", 12),
+                bg="#ecf0f1",
+                fg="#e74c3c"
+            ).pack(pady=20)
+        else:
+            # Create scrollable frame for history
+            list_frame = tk.Frame(self.content_frame, bg="white")
+            list_frame.pack(pady=20, padx=20, fill=tk.BOTH, expand=True)
+            
+            # Create treeview for better display
+            columns = ("ID", "Spot", "Driver", "Plate", "Time In", "Time Out")
+            tree = ttk.Treeview(
+                list_frame,
+                columns=columns,
+                show="headings",
+                height=15
+            )
+            
+            # Define headings
+            tree.heading("ID", text="Record ID")
+            tree.heading("Spot", text="Spot ID")
+            tree.heading("Driver", text="Driver Name")
+            tree.heading("Plate", text="Plate Number")
+            tree.heading("Time In", text="Time In")
+            tree.heading("Time Out", text="Time Out")
+            
+            # Define column widths
+            tree.column("ID", width=80, anchor="center")
+            tree.column("Spot", width=80, anchor="center")
+            tree.column("Driver", width=150, anchor="w")
+            tree.column("Plate", width=120, anchor="center")
+            tree.column("Time In", width=150, anchor="center")
+            tree.column("Time Out", width=150, anchor="center")
+            
+            # Add scrollbar
+            scrollbar = ttk.Scrollbar(list_frame, orient=tk.VERTICAL, command=tree.yview)
+            tree.configure(yscroll=scrollbar.set)
+            
+            # Insert data
+            for record in history:
+                time_in = record['time_in'].strftime('%Y-%m-%d %I:%M %p') if record['time_in'] else 'N/A'
+                time_out = record['time_out'].strftime('%Y-%m-%d %I:%M %p') if record['time_out'] else 'N/A'
+                
+                tree.insert("", tk.END, values=(
+                    record['id'],
+                    record['spot_id'],
+                    record['driver_name'],
+                    record['plate_number'],
+                    time_in,
+                    time_out
+                ))
+            
+            tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+            scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+            
+            # Summary
+            summary = tk.Label(
+                self.content_frame,
+                text=f"Total Records: {len(history)} (showing last 50)",
+                font=("Arial", 12, "bold"),
+                bg="#ecf0f1",
+                fg="#2c3e50"
+            )
+            summary.pack(pady=10)
+        
+        # Back button (always show regardless of spots)
+        tk.Button(
+            self.content_frame,
+            text="Back to Dashboard",
+            font=("Arial", 12, "bold"),
+            bg="#95a5a6",
+            fg="white",
+            width=20,
+            command=self.show_dashboard
+        ).pack(pady=20)
+    
+    def show_parking_history(self):
+        self.clear_content()
+        
+        # Title
+        title = tk.Label(
+            self.content_frame,
+            text="Parking History",
+            font=("Arial", 18, "bold"),
+            bg="#ecf0f1",
+            fg="#2c3e50"
+        )
+        title.pack(pady=20)
+        
+        # Get parking history data
+        history = self.db.get_parking_history()
+        
+        if not history:
+            tk.Label(
+                self.content_frame,
+                text="No parking history records found.",
+                font=("Arial", 12),
+                bg="#ecf0f1",
+                fg="#e74c3c"
+            ).pack(pady=20)
+        else:
+            # Create scrollable frame for history
+            list_frame = tk.Frame(self.content_frame, bg="white")
+            list_frame.pack(pady=20, padx=20, fill=tk.BOTH, expand=True)
+            
+            # Create treeview for better display
+            columns = ("ID", "Spot", "Driver", "Plate", "Time In", "Time Out")
+            tree = ttk.Treeview(
+                list_frame,
+                columns=columns,
+                show="headings",
+                height=15
+            )
+            
+            # Define headings
+            tree.heading("ID", text="Record ID")
+            tree.heading("Spot", text="Spot ID")
+            tree.heading("Driver", text="Driver Name")
+            tree.heading("Plate", text="Plate Number")
+            tree.heading("Time In", text="Time In")
+            tree.heading("Time Out", text="Time Out")
+            
+            # Define column widths
+            tree.column("ID", width=80, anchor="center")
+            tree.column("Spot", width=80, anchor="center")
+            tree.column("Driver", width=150, anchor="w")
+            tree.column("Plate", width=120, anchor="center")
+            tree.column("Time In", width=150, anchor="center")
+            tree.column("Time Out", width=150, anchor="center")
+            
+            # Add scrollbar
+            scrollbar = ttk.Scrollbar(list_frame, orient=tk.VERTICAL, command=tree.yview)
+            tree.configure(yscroll=scrollbar.set)
+            
+            # Insert data
+            for record in history:
+                time_in = record['time_in'].strftime('%Y-%m-%d %I:%M %p') if record['time_in'] else 'N/A'
+                time_out = record['time_out'].strftime('%Y-%m-%d %I:%M %p') if record['time_out'] else 'N/A'
+                
+                tree.insert("", tk.END, values=(
+                    record['id'],
+                    record['spot_id'],
+                    record['driver_name'],
+                    record['plate_number'],
+                    time_in,
+                    time_out
+                ))
+            
+            tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+            scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+            
+            # Summary
+            summary = tk.Label(
+                self.content_frame,
+                text=f"Total Records: {len(history)} (showing last 50)",
+                font=("Arial", 12, "bold"),
+                bg="#ecf0f1",
+                fg="#2c3e50"
+            )
+            summary.pack(pady=10)
+        
+        # Back button
         tk.Button(
             self.content_frame,
             text="Back to Dashboard",
